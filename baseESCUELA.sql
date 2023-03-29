@@ -58,10 +58,13 @@ create table Asistencia(
 create table Calificacion(
 id int primary key,
 id_estudiante int,
-    id_curso int,
-constraint foreign key(id_estudiante)REFERENCES estudiante(id),
-    constraint foreign key(id_curso)REFERENCES Curso(id)
+constraint foreign key(id_estudiante)REFERENCES estudiante(id)
 );
+
+;
+ALTER TABLE `Calificacion`
+add column calificacion int;
+
 create table tipo_doc(
     id int primary key,
     cuil BIGINT,
@@ -73,6 +76,8 @@ create table pais(
     id int primary key,
     pais varchar(30)
 );
+
+CREATE TABLE 
 create table datos_personales(
 id int primary key,
 id_profesor INT
@@ -116,7 +121,9 @@ INSERT INTO beca (id, fecha_sol, justificacion) VALUES
 
 INSERT INTO estudiante (id, id_beca, id_niveleducativo, direc_tutor, tutor, telefono_tutor) VALUES
 (1, 1, 1, 'Calle Calera 123', 'Juan Pérez', 123456789),
-(2, 2, 2, 'Calle cerrO 456', 'María Gómez', 987654321);
+(2, 2, 2, 'Calle cerrO 456', 'María Gómez', 987654321)
+(3, 2, 1, 'Rafael Nunez 123', 'Pep Carlos', 1241321);
+
 
 INSERT INTO Profesor (id, correo, asignaturas, horas, salario) VALUES
 (1, 'jorgelin.profesor@gmail.com', 'Matemáticas, Física', 40, 2000.00),
@@ -130,9 +137,12 @@ INSERT INTO Asistencia (id, id_estudiante, id_curso, fecha_asistencia, presencia
 (1, 1, 1, '2022-02-01', 'Presente'),
 (2, 2, 2, '2022-02-05', 'Ausente');
 
-INSERT INTO Calificacion (id, id_estudiante, id_curso) VALUES
-(1, 1, 1),
-(2, 2, 2);
+INSERT INTO Calificacion (id, id_estudiante,calificacion) VALUES
+(1, 1,8),
+(2, 2 ,5),
+(3,3,10),
+(4,2,7);
+
 
 INSERT INTO tipo_doc (id, cuil, pasaporte, dni, cuit) VALUES
 (1, 5984321 , NULL,  12345678, NULL),
@@ -151,13 +161,30 @@ VALUES
 (2, 2, NULL, 1, 2, 'Calera 591', '2009-01-01', 49858012, 'Sinches', 'Julian');
 
 
-SELECT e.id, e.direc_tutor, e.tutor, n.nivel, b.justificacion
-FROM estudiante e
-INNER JOIN nivel_educativo n ON e.id_niveleducativo = n.id
-INNER JOIN beca b ON e.id_beca = b.id;
+
 
 select d.fecha_nac,d.id_estudiante,d.nombre,d.apellido,d.edad
 from datos_personales d
 where d.edad<14.6;
 
+
+SELECT salario/horas AS monto_por_hora,id,asignaturas,horas
+FROM `Profesor`;
+
+#la escuela desea generar informes de desempeño para los estudiantes, lo que
+#incluiría su promedio de calificaciones en cada curso y su promedio general en el
+#nivel educativo
+
+SELECT e.id AS id_estudiante,avg(c.calificacion) as PROMEDIO ,n.nivel
+from estudiante as e
+inner join nivel_educativo as n on e.id_niveleducativo = n.id
+inner join Calificacion as c on c.id_estudiante = e.id
+ group by id_estudiante
+
+;
+
+SELECT e.id, e.direc_tutor, e.tutor, n.nivel, b.justificacion
+FROM estudiante e
+INNER JOIN nivel_educativo n ON e.id_niveleducativo = n.id
+INNER JOIN beca b ON e.id_beca = b.id;
 
