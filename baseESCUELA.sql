@@ -1,5 +1,4 @@
 -- Active: 1677680548756@@127.0.0.1@3306@ESCUELA
--- Active: 1677680548756@@127.0.0.1@3306@ESCUELA
 use ESCUELA;
 CREATE TABLE grado (
     id INT NOT NULL,
@@ -65,7 +64,7 @@ constraint foreign key(id_estudiante)REFERENCES estudiante(id),
 );
 create table tipo_doc(
     id int primary key,
-    cuil INT,
+    cuil BIGINT,
     pasaporte int,
     dni int,
     cuit int
@@ -81,7 +80,7 @@ id_profesor INT
 ,id_pais INT
 ,id_tipodoc INT
 ,direccion varchar(56)
-,fecha_nac DATE
+,fecha_nac DATETIME
 ,telefono INT
 ,apellido varchar(35)
 ,nombre VARCHAR(30)
@@ -90,3 +89,71 @@ id_profesor INT
 ,constraint foreign key (id_pais)REFERENCES pais(id)
 ,constraint foreign key (id_tipodoc)REFERENCES tipo_doc(id)
 );
+ALTER TABLE datos_personales
+ADD COLUMN edad INT;
+
+UPDATE datos_personales
+SET edad = TIMESTAMPDIFF(YEAR, fecha_nac, CURDATE());
+
+
+INSERT INTO grado (id, nombre_grado) VALUES 
+(1, 'Primero de primaria'),
+(2, 'Segundo de Secundario'),
+(3, 'Tercero de Preparatoria');
+
+INSERT INTO nivel_educativo (id, id_grado, nivel) VALUES
+(1, 1, 'Primaria'),
+(2, 2, 'Secundario'),
+(3, 3, 'Preparatoria');
+
+INSERT INTO beca (id, fecha_sol, justificacion) VALUES
+(1, '2022-01-01', 'Beca para estudiante con discapacidad motriz '),
+(2, '2022-01-02', 'Beca para estudiante destacado en deportes');
+
+INSERT INTO estudiante (id, id_beca, id_niveleducativo, direc_tutor, tutor, telefono_tutor) VALUES
+(1, 1, 1, 'Calle Calera 123', 'Juan Pérez', 123456789),
+(2, 2, 2, 'Calle cerrO 456', 'María Gómez', 987654321);
+
+INSERT INTO Profesor (id, correo, asignaturas, horas, salario) VALUES
+(1, 'jorgelin.profesor@gmail.com', 'Matemáticas, Física', 40, 2000.00),
+(2, 'pancho.profesora@gmail.com', 'Lengua, Literatura', 35, 1800.00);
+
+INSERT INTO Curso (id, id_profesor, id_estudiante, modalidad, forma_pago, horario) VALUES
+(1, 1, 1, 'Presencial', 'Efectivo', 'Lunes a viernes de 8 a 10'),
+(2, 2, 2, 'Virtual', 'Tarjeta de crédito', 'Sábados de 9 a 12');
+
+INSERT INTO Asistencia (id, id_estudiante, id_curso, fecha_asistencia, presencia) VALUES
+(1, 1, 1, '2022-02-01', 'Presente'),
+(2, 2, 2, '2022-02-05', 'Ausente');
+
+INSERT INTO Calificacion (id, id_estudiante, id_curso) VALUES
+(1, 1, 1),
+(2, 2, 2);
+
+INSERT INTO tipo_doc (id, cuil, pasaporte, dni, cuit) VALUES
+(1, 5984321 , NULL,  12345678, NULL),
+(2, NULL, '12345678', NULL, NULL),
+(3, NULL, Null, NULL, 204597293);
+
+
+--  
+INSERT INTO pais (id, pais) VALUES
+(1, 'Argentina'),
+(2, 'Francia');
+
+INSERT INTO datos_personales (id, id_profesor, id_estudiante, id_pais, id_tipodoc, direccion, fecha_nac, telefono, apellido, nombre)
+VALUES
+(1, 1, NULL, 1, 2, 'Calle Calera 123', '1990-01-01', 5551234, 'Rosas', 'Juan'),
+(2, 2, NULL, 1, 2, 'Calera 591', '2009-01-01', 49858012, 'Sinches', 'Julian');
+
+
+SELECT e.id, e.direc_tutor, e.tutor, n.nivel, b.justificacion
+FROM estudiante e
+INNER JOIN nivel_educativo n ON e.id_niveleducativo = n.id
+INNER JOIN beca b ON e.id_beca = b.id;
+
+select d.fecha_nac,d.id_estudiante,d.nombre,d.apellido
+from datos_personales d
+where d.edad<14,6;
+
+
