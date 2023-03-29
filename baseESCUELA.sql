@@ -203,4 +203,4 @@ GROUP BY
 SELECT e.id, e.direc_tutor, e.tutor, n.nivel, b.justificacion
 FROM estudiante e
 INNER JOIN nivel_educativo n ON e.id_niveleducativo = n.id
-INNER JOIN beca b ON e.id_beca = b.id;
+INNER JOIN beca b ON e.id_beca = b.id; 
