@@ -93,7 +93,11 @@ ALTER TABLE datos_personales
 ADD COLUMN edad INT;
 
 UPDATE datos_personales
-SET edad = TIMESTAMPDIFF(YEAR, fecha_nac, CURDATE());
+SET edad = DATEDIFF(CURDATE(), fecha_nac) DIV 30;
+ALTER TABLE datos_personales
+MODIFY COLUMN edad DECIMAL(4,1);
+UPDATE datos_personales
+SET edad = ROUND(DATEDIFF(CURDATE(), fecha_nac) / 365.25, 1);
 
 
 INSERT INTO grado (id, nombre_grado) VALUES 
@@ -152,8 +156,8 @@ FROM estudiante e
 INNER JOIN nivel_educativo n ON e.id_niveleducativo = n.id
 INNER JOIN beca b ON e.id_beca = b.id;
 
-select d.fecha_nac,d.id_estudiante,d.nombre,d.apellido
+select d.fecha_nac,d.id_estudiante,d.nombre,d.apellido,d.edad
 from datos_personales d
-where d.edad<14,6;
+where d.edad<14.6;
 
 
