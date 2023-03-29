@@ -135,7 +135,10 @@ INSERT INTO Curso (id, id_profesor, id_estudiante, modalidad, forma_pago, horari
 
 INSERT INTO Asistencia (id, id_estudiante, id_curso, fecha_asistencia, presencia) VALUES
 (1, 1, 1, '2022-02-01', 'Presente'),
-(2, 2, 2, '2022-02-05', 'Ausente');
+(2, 2, 2, '2022-02-05', 'Ausente'),
+
+(3, 1, 2, '2022-02-05', 'Ausente');
+
 
 INSERT INTO Calificacion (id, id_estudiante,calificacion) VALUES
 (1, 1,8),
@@ -162,19 +165,16 @@ VALUES
 
 
 
-
+#QUERY 1 EDAD_ALUUMNOS <14 ANIOS Y 6 MESES
 select d.fecha_nac,d.id_estudiante,d.nombre,d.apellido,d.edad
 from datos_personales d
 where d.edad<14.6;
 
-
+#QUERY 4 SALARIO
 SELECT salario/horas AS monto_por_hora,id,asignaturas,horas
 FROM `Profesor`;
 
-#la escuela desea generar informes de desempeño para los estudiantes, lo que
-#incluiría su promedio de calificaciones en cada curso y su promedio general en el
-#nivel educativo
-
+#QUERY 2 CALIFICACION PROMEDIO
 SELECT e.id AS id_estudiante,avg(c.calificacion) as PROMEDIO ,n.nivel
 from estudiante as e
 inner join nivel_educativo as n on e.id_niveleducativo = n.id
@@ -183,8 +183,24 @@ inner join Calificacion as c on c.id_estudiante = e.id
 
 ;
 
+#ASISTENCIA QUERY 3
+SELECT
+  DATE_FORMAT(fecha_asistencia, '%Y-%m') AS mes,
+  COUNT(*) AS total_clases,
+  SUM(presencia = 'Presente') AS clases_presentes,
+  SUM(presencia = 'Ausente') AS clases_ausentes,
+  CONCAT(ROUND(SUM(presencia = 'Presente') * 100 / COUNT(*), 2), '%') AS porcentaje_asistencia,
+  (SELECT fecha_asistencia FROM `Asistencia`  GROUP BY fecha_asistencia ORDER BY COUNT(*) DESC LIMIT 1) AS fecha_mas_inasistencias,
+  (SELECT fecha_asistencia FROM `Asistencia`  GROUP BY fecha_asistencia ORDER BY COUNT(*) ASC LIMIT 1) AS fecha_mas_asistencias
+FROM
+  `Asistencia`
+GROUP BY
+  mes
+;
+
+
+#QUERY PRUEBA
 SELECT e.id, e.direc_tutor, e.tutor, n.nivel, b.justificacion
 FROM estudiante e
 INNER JOIN nivel_educativo n ON e.id_niveleducativo = n.id
 INNER JOIN beca b ON e.id_beca = b.id;
-
