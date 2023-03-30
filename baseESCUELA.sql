@@ -1,6 +1,6 @@
 -- Active: 1677680548756@@127.0.0.1@3306@ESCUELA
-Create DATABASE ESCUELA;
-use ESCUELA;
+Create DATABASE Escuela;
+use Escuela;
 CREATE TABLE grado (
     id INT NOT NULL,
     nombre_grado VARCHAR(50) NOT NULL,
@@ -78,29 +78,30 @@ create table pais(
     pais varchar(30)
 );
 
-CREATE TABLE 
-create table datos_personales(
-id int primary key,
-id_profesor INT
-,id_estudiante INT
-,id_pais INT
-,id_tipodoc INT
-,direccion varchar(56)
-,fecha_nac DATETIME
-,telefono INT
-,apellido varchar(35)
-,nombre VARCHAR(30)
-,constraint foreign key (id_profesor)REFERENCES Profesor(id)
-,constraint foreign key (id_estudiante)REFERENCES estudiante(id)
-,constraint foreign key (id_pais)REFERENCES pais(id)
-,constraint foreign key (id_tipodoc)REFERENCES tipo_doc(id)
+
+CREATE TABLE datos_personales (
+    id INT PRIMARY KEY,
+    id_profesor INT,
+    id_estudiante INT,
+    id_pais INT,
+    id_tipodoc INT,
+    direccion VARCHAR(56),
+    fecha_nac DATETIME,
+    telefono INT,
+    apellido VARCHAR(35),
+    nombre VARCHAR(30),
+    CONSTRAINT fk_profesor FOREIGN KEY (id_profesor) REFERENCES Profesor(id),
+    CONSTRAINT fk_estudiante FOREIGN KEY (id_estudiante) REFERENCES estudiante(id),
+    CONSTRAINT fk_pais FOREIGN KEY (id_pais) REFERENCES pais(id),
+    CONSTRAINT fk_tipodoc FOREIGN KEY (id_tipodoc) REFERENCES tipo_doc(id)
 );
+
 ALTER TABLE datos_personales
 ADD COLUMN edad INT;
 
 UPDATE datos_personales
 SET edad = DATEDIFF(CURDATE(), fecha_nac) DIV 30;
-ALTER TABLE datos_personales
+ALTER TABLE datos_personales 
 MODIFY COLUMN edad DECIMAL(4,1);
 UPDATE datos_personales
 SET edad = ROUND(DATEDIFF(CURDATE(), fecha_nac) / 365.25, 1);
@@ -109,61 +110,86 @@ SET edad = ROUND(DATEDIFF(CURDATE(), fecha_nac) / 365.25, 1);
 INSERT INTO grado (id, nombre_grado) VALUES 
 (1, 'Primero de primaria'),
 (2, 'Segundo de Secundario'),
-(3, 'Tercero de Preparatoria');
+(3, 'Segundo de primaria'),
+(4, 'Primero de Secundario'),
+(5, 'Tercero de Preparatoria');
 
 INSERT INTO nivel_educativo (id, id_grado, nivel) VALUES
 (1, 1, 'Primaria'),
 (2, 2, 'Secundario'),
-(3, 3, 'Preparatoria');
+(3, 4, 'Secundario'),
+(4, 3, 'Primaria'),
+(5, 5, 'Preparatoria');
 
 INSERT INTO beca (id, fecha_sol, justificacion) VALUES
 (1, '2022-01-01', 'Beca para estudiante con discapacidad motriz '),
-(2, '2022-01-02', 'Beca para estudiante destacado en deportes');
+(3, '2021-01-01', 'Beca para estudiante destacado en calificaciones '),
+(4, '2021-02-03', 'Beca para estudiante con discapacidad motriz '),
+(5, '2022-09-06', 'Beca para estudiante abanderado '),
+(2, '2022-01-12', 'Beca para estudiante destacado en deportes');
 
 INSERT INTO estudiante (id, id_beca, id_niveleducativo, direc_tutor, tutor, telefono_tutor) VALUES
 (1, 1, 1, 'Calle Calera 123', 'Juan Pérez', 123456789),
-(2, 2, 2, 'Calle cerrO 456', 'María Gómez', 987654321)
-(3, 2, 1, 'Rafael Nunez 123', 'Pep Carlos', 1241321);
+(2, 2, 2, 'Pepe ramon 412', 'María Gómez', 987654321),
+(4, 5, 1, 'Calle pepdro 123', 'Cristiano ROnaldo', 35131230),
+(5, 4, 2, 'Calle Prueba 321', 'Messi lionel', 35131231),
+(3, 3, 3, 'Rafael Nunez 123', 'Miguel Angel', 1241321);
 
 
 INSERT INTO Profesor (id, correo, asignaturas, horas, salario) VALUES
 (1, 'jorgelin.profesor@gmail.com', 'Matemáticas, Física', 40, 2000.00),
+(3, 'sfreddo.profesor@gmail.com', 'Informatica', 40, 1500.00),
+(4, 'teoreyna.profesor@gmail.com', 'Matemáticas', 45, 2500.00),
+(5, 'maestro1.profesor@gmail.com', 'Quimica,Biologia', 50, 2000.00),
 (2, 'pancho.profesora@gmail.com', 'Lengua, Literatura', 35, 1800.00);
 
 INSERT INTO Curso (id, id_profesor, id_estudiante, modalidad, forma_pago, horario) VALUES
-(1, 1, 1, 'Presencial', 'Efectivo', 'Lunes a viernes de 8 a 10'),
-(2, 2, 2, 'Virtual', 'Tarjeta de crédito', 'Sábados de 9 a 12');
+(1, 5, 1, 'Presencial', 'Efectivo', 'Lunes a viernes de 8 a 10'),
+(2, 1, 1, 'Presencial', 'Efectivo', 'Martes y viernes de 10 a 12'),
+(3, 2, 1, 'vIRTUAL', 'Efectivo', 'Lunes de 8 a 10'),
+(4, 5, 1, 'Presencial', 'Efectivo', 'Jueves de 7:45 a 10'),
+(5, 4, 2, 'Virtual', 'Tarjeta de crédito', 'martes de 9 a 12');
 
 INSERT INTO Asistencia (id, id_estudiante, id_curso, fecha_asistencia, presencia) VALUES
 (1, 1, 1, '2022-02-01', 'Presente'),
 (2, 2, 2, '2022-02-05', 'Ausente'),
+(3, 3, 2, '2022-02-05', 'Ausente'),
+(4, 4, 2, '2022-02-01', 'Presente'),
 
-(3, 1, 2, '2022-02-05', 'Ausente');
+(5, 5, 2, '2022-02-05', 'Ausente');
 
 
 INSERT INTO Calificacion (id, id_estudiante,calificacion) VALUES
 (1, 1,8),
 (2, 2 ,5),
 (3,3,10),
+(5,4,2),
+
 (4,2,7);
 
 
 INSERT INTO tipo_doc (id, cuil, pasaporte, dni, cuit) VALUES
 (1, 5984321 , NULL,  12345678, NULL),
 (2, NULL, '12345678', NULL, NULL),
-(3, NULL, Null, NULL, 204597293);
-
+(3, NULL, Null, NULL, 204597293),
+(4, NULL, '4591883', NULL, NULL),
+(5, NULL, 9489502, NULL, 102930194);
 
 --  
 INSERT INTO pais (id, pais) VALUES
 (1, 'Argentina'),
-(2, 'Francia');
+(4, 'India'),
+(3, 'Peru'),
+(2, 'Chile'),
+(5, 'Francia');
 
 INSERT INTO datos_personales (id, id_profesor, id_estudiante, id_pais, id_tipodoc, direccion, fecha_nac, telefono, apellido, nombre)
 VALUES
 (1, 1, NULL, 1, 2, 'Calle Calera 123', '1990-01-01', 5551234, 'Rosas', 'Juan'),
-(2, 2, NULL, 1, 2, 'Calera 591', '2009-01-01', 49858012, 'Sinches', 'Julian');
-
+(2, 2, NULL, 1, 2, 'Calera 591', '2009-01-01', 49858012, 'Sinches', 'mateo'),
+(3, 3, NULL, 1, 2, 'calle 591', '2009-01-01', 49858012, 'Brezzo', 'fran'),
+(4, 2, NULL, 1, 2, 'NUNEZ 431', '2015-01-01', 49858012, 'blazquez', 'facha'),
+(5, 5, NULL, 1, 2, 'Cerro De Rosas 642', '2004-09-09', 49858012, 'martiarena', 'tomi');
 
 
 #QUERY 1 EDAD_ALUUMNOS <14 ANIOS Y 6 MESES
