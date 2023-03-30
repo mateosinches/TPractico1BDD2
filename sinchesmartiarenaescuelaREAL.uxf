@@ -47,8 +47,8 @@
     <panel_attributes>nivel_educativo
 --
 -id
--id_grado
 -nivel
+-id_grado
 --
 +asigancion()</panel_attributes>
     <additional_attributes/>
@@ -77,12 +77,13 @@ m1=0..n</panel_attributes>
 --
 -id
 -genero
--id_beca
 -direc_tutor
 -tutor
 -telefono_tutor
 -id_niveleduc
 -id_calificacion
+-id_curso
+-id_beca
 --
 +registro()
 +solicitar()</panel_attributes>
@@ -123,16 +124,16 @@ m1=0..n</panel_attributes>
     <panel_attributes>datos_personales
 --
 -id
--id_pais
--id_tipodoc
--id_profesor
--id_estudiante
 -direccion
 -fecha_nacimiento
 -telefono
 -apellido
 -nombre
 -edad
+-id_pais
+-id_tipodoc
+-id_profesor
+-id_estudiante
 --</panel_attributes>
     <additional_attributes/>
   </element>
@@ -248,10 +249,10 @@ m1=0..n</panel_attributes>
     <panel_attributes>curso
 --
 -id
--id_profesor
 -modalidad
 -FORMADEPAGO(NOSE)
 -horario
+-id_profesor
 --
 +registrar()
 +ofrecer()</panel_attributes>
@@ -312,10 +313,10 @@ m1=0..n</panel_attributes>
     <panel_attributes>Asistencia
 --
 -id
--id_estudiante
--id_curso
 -fecha_asist
 -presencia
+-id_estudiante
+-id_curso
 --
 +registrar()</panel_attributes>
     <additional_attributes/>
@@ -343,5 +344,17 @@ m1=0..n</panel_attributes>
     <panel_attributes>lt=&lt;-
 m1=0..n</panel_attributes>
     <additional_attributes>10.0;200.0;290.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>376</x>
+      <y>696</y>
+      <w>312</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=0..n</panel_attributes>
+    <additional_attributes>10.0;10.0;370.0;20.0</additional_attributes>
   </element>
 </diagram>
